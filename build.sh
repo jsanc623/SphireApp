@@ -3,7 +3,7 @@ apt-get update
 apt-get upgrade
 
 # Install primary tools
-apt-get -y install gcc build-essential golang git
+apt-get -y install gcc cmake build-essential golang git valgrind zlib1g-dev libdb-dev libaio-dev
 
 # Create our application directory
 mkdir /opt/sphire
@@ -29,3 +29,13 @@ echo 'export GOARCH="amd64"' >> ~/.bashrc
 echo 'export GOHOSTOS="linux"' >> ~/.bashrc
 echo 'export GOHOSTARCH="amd64"' >> ~/.bashrc
 echo 'export GOBIN="${GOROOT}/bin"' >> ~/.bashrc
+
+# Build MariaDB with TokuDB engine
+mkdir tokudb-maria
+cd tokudb-maria/
+git clone https://github.com/Tokutek/tokudb-engine.git
+cd tokudb-engine/
+scripts/make.mysql.bash --mysqlbuild=mariadb-5.5.40-tokudb-7.5.3-linux-x86_64
+
+apt-get autoremove
+apt-get autoclean
