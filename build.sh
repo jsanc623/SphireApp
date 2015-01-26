@@ -3,7 +3,7 @@ apt-get update
 apt-get upgrade
 
 # Install primary tools
-apt-get install -y gcc cmake build-essential golang git 
+apt-get install -y gcc cmake build-essential golang git
 
 # Create our application directory
 mkdir /opt/sphire

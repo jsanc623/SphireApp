@@ -6,17 +6,15 @@ import (
 )
  
 const (
-    HTTP_PORT = "7227"
-    PORT_SEPARATOR = ":"
-    HTTP_IP = "63.217.249.27"
+    HTTP_LISTEN = "0.0.0.0:7227"
 )
  
 func main(){
-    http.HandleFunc("/", getHandler)
-    http.ListenAndServe(HTTP_IP + PORT_SEPARATOR + HTTP_PORT, nil)
+    http.HandleFunc("/", router)
+    http.ListenAndServe(HTTP_LISTEN, nil)
 }
  
-func getHandler(writer http.ResponseWriter, request *http.Request){
-    strFromUrl := request.URL.Path[len("/"):]
-    fmt.Fprintf(writer, "String: %s\n", strFromUrl);
+func router(writer http.ResponseWriter, request *http.Request){
+    route := request.URL.Path[len("/"):]
+    fmt.Fprintf(writer, "Requested route: %s\n", route);
 }
