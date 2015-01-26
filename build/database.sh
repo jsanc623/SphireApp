@@ -6,3 +6,12 @@ apt-get update
 apt-get install mariadb-server
 touch /etc/mysql/conf.d/tokudb.cnf
 echo 'plugin-load=ha_tokudb' >> /etc/mysql/conf.d/tokudb.cnf
+
+# Load new MariaDB config
+cp mysql/mariadb.cnf /etc/mysql/conf.d/mariadb.cnf
+
+# Enable TokuDB Engine
+cp mysql/tokudb.cnf /etc/mysql/conf.d/tokudb.cnf
+
+# Load new MySQL config
+cp mysql/my.cnf /etc/mysql/my.cnf
