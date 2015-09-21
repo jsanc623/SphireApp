@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"html/template"
+	"net/http"
 	"strconv"
 
-	
-	"sphire/geofence"
 	"sphire/configuration"
+	"sphire/geofence"
 )
 
 const (
@@ -16,8 +15,8 @@ const (
 )
 
 type Page struct {
-    Title string
-    Body  template.HTML
+	Title string
+	Body  template.HTML
 }
 
 func main() {
@@ -26,7 +25,7 @@ func main() {
 
 	// Get a pointer to our configuration
 	vpx, err := configuration.Configuration("DEV")
-	if err != nil{
+	if err != nil {
 		panic(fmt.Errorf("Error reading configuration file: %s", err))
 	}
 }
@@ -37,18 +36,18 @@ func router(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	route := request.URL.Path[len("/"):]
- 	switch route {
-    case "geofence":
-        rt_geomap(writer, request)
+	switch route {
+	case "geofence":
+		rt_geomap(writer, request)
 		return
-    case "home":
-        fmt.Fprintf(writer, "home hommily")
+	case "home":
+		fmt.Fprintf(writer, "home hommily")
 		return
-    }
-    err404(writer)
+	}
+	err404(writer)
 }
 
-func err404(writer http.ResponseWriter){
+func err404(writer http.ResponseWriter) {
 	writer.Header().Set("Content-Type", "text/plaintext; charset=utf-8")
 	fmt.Fprintf(writer, "404 Not Found")
 }
@@ -56,14 +55,14 @@ func err404(writer http.ResponseWriter){
 func rt_geomap(writer http.ResponseWriter, request *http.Request) {
 	miles, _ := strconv.ParseFloat(request.URL.Query().Get("miles"), 64)
 	var res string = geofence.BoundingBox(40.752087, -73.980190, miles)
-    renderTemplate(writer, "map", loadPage("Map test", res))
+	renderTemplate(writer, "map", loadPage("Map test", res))
 }
 
 func loadPage(title string, body string) *Page {
-    return &Page{Title: title, Body: template.HTML(body)}
+	return &Page{Title: title, Body: template.HTML(body)}
 }
 
 func renderTemplate(writer http.ResponseWriter, templ string, page *Page) {
-    t, _ := template.ParseFiles("resources/views/" + templ + ".html")
-    t.Execute(writer, page)
+	t, _ := template.ParseFiles("resources/views/" + templ + ".html")
+	t.Execute(writer, page)
 }

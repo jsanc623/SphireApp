@@ -5,16 +5,16 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func connect(){
+func connect() {
 
 }
 
-func Add(){
+func Add() {
 
 	// geolocation_read
 }
 
-func Read(){
+func Read() {
 
 	// geolocation_add
 }

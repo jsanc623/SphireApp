@@ -2,7 +2,7 @@ package configuration
 
 import (
 	"github.com/spf13/viper"
-    "strings"
+	"strings"
 )
 
 //type vpx *viper.Viper
@@ -19,8 +19,8 @@ func Configuration(environment string) (*viper.Viper, error) {
 
 	var vpx *viper.Viper = viper.New()
 	vpx.SetConfigName(strings.Split(cfx_file, ".")[0]) // name of config file (without extension)
-	vpx.AddConfigPath("/opt/sphire/config") // path to look for the config file in
-	err := vpx.ReadInConfig() // Find and read the config file
+	vpx.AddConfigPath("/opt/sphire/config")            // path to look for the config file in
+	err := vpx.ReadInConfig()                          // Find and read the config file
 
 	if err != nil { // Handle errors reading the config file
 		return vpx, err

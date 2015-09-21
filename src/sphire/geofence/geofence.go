@@ -11,7 +11,7 @@ type (
 	Bounds struct {
 		Lat BoundsLatLng `json:"lat"`
 		Lng BoundsLatLng `json:"lng"`
-		Mid LatLng `json:"mid"`
+		Mid LatLng       `json:"mid"`
 	}
 
 	LatLng struct {
