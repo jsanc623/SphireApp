@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"sphire/geofence"
 	"html/template"
 	"strconv"
+
+	
+	"sphire/geofence"
+	"sphire/configuration"
 )
 
 const (
@@ -20,6 +23,12 @@ type Page struct {
 func main() {
 	http.HandleFunc("/", router)
 	http.ListenAndServe(HTTP_LISTEN, nil)
+
+	// Get a pointer to our configuration
+	vpx, err := configuration.Configuration("DEV")
+	if err != nil{
+		panic(fmt.Errorf("Error reading configuration file: %s", err))
+	}
 }
 
 func router(writer http.ResponseWriter, request *http.Request) {

@@ -1,29 +1,30 @@
 package configuration
 
 import (
-	//"github.com/spf13/viper"
+	"github.com/spf13/viper"
     "strings"
-	"fmt"
 )
 
-func Configuration(environment string) string {
+//type vpx *viper.Viper
+
+func Configuration(environment string) (*viper.Viper, error) {
 	var cfx_file string = "development.json"
 
 	switch environment {
-	case "DEV":
-		cfx_file = "development.json"
 	case "STG":
 		cfx_file = "staging.json"
-	case "PROD":
+	case "PRD":
 		cfx_file = "production.json"
 	}
 
-	fmt.Println(strings.Split(cfx_file, ".")[0])
+	var vpx *viper.Viper = viper.New()
+	vpx.SetConfigName(strings.Split(cfx_file, ".")[0]) // name of config file (without extension)
+	vpx.AddConfigPath("/opt/sphire/config") // path to look for the config file in
+	err := vpx.ReadInConfig() // Find and read the config file
 
-	//viper.SetConfigName(strings.Split(cfx_file, ".")[0]) // name of config file (without extension)
-	//viper.AddConfigPath("/etc/appname/")   // path to look for the config file in
-	//viper.AddConfigPath("$HOME/.appname")  // call multiple times to add many search paths
-	//viper.ReadInConfig() // Find and read the config file
+	if err != nil { // Handle errors reading the config file
+		return vpx, err
+	}
 
-	return ""
+	return vpx, nil
 }

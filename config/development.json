@@ -1,0 +1,8 @@
+{
+    "application": {
+        "log": {
+            "error": "/var/log/sphire/error.log",
+            "access": "/var/log/sphire/access.log"
+        }
+    }
+}
