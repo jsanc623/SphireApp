@@ -3,11 +3,10 @@ package configuration
 import (
 	"github.com/spf13/viper"
 	"strings"
+	"fmt"
 )
 
-//type vpx *viper.Viper
-
-func Configuration(environment string) (*viper.Viper, error) {
+func Configuration(environment string) (*viper.Viper) {
 	var cfx_file string = "development.json"
 
 	switch environment {
@@ -23,8 +22,8 @@ func Configuration(environment string) (*viper.Viper, error) {
 	err := vpx.ReadInConfig()                          // Find and read the config file
 
 	if err != nil { // Handle errors reading the config file
-		return vpx, err
+		panic(fmt.Errorf("Error reading configuration file: %s", err))
 	}
 
-	return vpx, nil
+	return vpx
 }
