@@ -10,6 +10,7 @@ import (
 
 	"sphire/configuration"
 	"sphire/geofence"
+	sfxlog "sphire/log"
 )
 
 type Page struct {
@@ -19,12 +20,18 @@ type Page struct {
 
 // viper configuration pointer
 var vpx *viper.Viper
+var lpx *sfxlog
 
 func main() {
-	fmt.Println("")
+	// Configure our log manager
+	lpx = sfxlog.Log()
+
+	lpx.Error.Println("asdf")
 
 	// Get a pointer to our configuration
 	vpx = configuration.Configuration("DEV")
+
+
 
 	// Start listening for requests
 	http.HandleFunc("/", router)
