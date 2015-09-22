@@ -20,18 +20,15 @@ type Page struct {
 
 // viper configuration pointer
 var vpx *viper.Viper
-var lpx *sfxlog
 
 func main() {
 	// Configure our log manager
-	lpx = sfxlog.Log()
-
-	lpx.Error.Println("asdf")
+	sfxlog.Init("json", "DEV", "/tmp/sphire.log")
+	sfxlog.Log(nil, "Logrus log manager started", "info")
 
 	// Get a pointer to our configuration
 	vpx = configuration.Configuration("DEV")
-
-
+	sfxlog.Log(nil, "Viper configuration manager started", "info")
 
 	// Start listening for requests
 	http.HandleFunc("/", router)
