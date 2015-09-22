@@ -2,13 +2,12 @@ package log
 
 import (
 	"os"
-	"fmt"
 	log "github.com/Sirupsen/logrus"
 )
 
 var lpx = log.New()
 
-func Init(formatter string, environment string, log_file string) {
+func Init(formatter string, environment string, log_file string) bool {
 	switch formatter {
 	case "text":
 		lpx.Formatter = new(log.TextFormatter)
@@ -18,12 +17,9 @@ func Init(formatter string, environment string, log_file string) {
 
 	// Output to stderr/file instead of stdout
 	if log_file != "" {
-		fmt.Println("file")
 		f_ptr, _ := os.OpenFile(log_file, os.O_RDWR|os.O_APPEND, os.ModePerm)
 		lpx.Out = f_ptr
-		//defer f_ptr.Close()
 	} else {
-		fmt.Println("Stderr")
 		log.SetOutput(os.Stderr)
 	}
 
@@ -35,6 +31,8 @@ func Init(formatter string, environment string, log_file string) {
 	case "PRD":
 		lpx.Level = log.WarnLevel
 	}
+
+	return true
 }
 
 // Log logs a message to the defined logger

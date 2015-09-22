@@ -18,29 +18,42 @@ type Page struct {
 	Body  template.HTML
 }
 
-// viper configuration pointer
-var vpx *viper.Viper
+// get viper configuration pointer
+var vpx *viper.Viper = configuration.Configuration("DEV")
+
+// logrus log manager init
+var _ = sfxlog.Init("json", "DEV", "/tmp/sphire.log")
 
 func main() {
-	// Configure our log manager
-	sfxlog.Init("json", "DEV", "/tmp/sphire.log")
-	sfxlog.Log(nil, "Logrus log manager started", "info")
-
-	// Get a pointer to our configuration
-	vpx = configuration.Configuration("DEV")
-	sfxlog.Log(nil, "Viper configuration manager started", "info")
-
-	// Start listening for requests
+	// Start listening for all requests on "/"
 	http.HandleFunc("/", router)
+
+	sfxlog.Log(nil, "main.go:main() Attempting to listen for requests", "info")
 	http.ListenAndServe(vpx.Get("application.http.listen").(string), nil)
 }
 
 func router(writer http.ResponseWriter, request *http.Request) {
-	// Set headers
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	switch request.URL.Path[len("/"):] {
+	// build the url
+	url := request.URL.Scheme + request.URL.Opaque + request.URL.Host + request.URL.Path
+
+	// Append the query if any exists
+	if request.URL.RawQuery != "" {
+		url += "?" + request.URL.RawQuery
+	}
+
+	// kill the favicon
+	if url == "/favicon.ico" {
+		kill_favicon(writer)
+		return
+	}
+
+	path := request.URL.Path[len("/"):]
+	sfxlog.Log(nil, "main.go:router() " + request.Method + " " + request.Proto + url, "info")
+
+	switch path {
 	case "geofence":
 		rt_geomap(writer, request)
 		return
@@ -53,6 +66,10 @@ func rt_geomap(writer http.ResponseWriter, request *http.Request) {
 	miles, _ := strconv.ParseFloat(request.URL.Query().Get("miles"), 64)
 	var res string = geofence.BoundingBox(40.752087, -73.980190, miles)
 	renderTemplate(writer, "map", loadPage("Map test", res))
+}
+
+func kill_favicon(writer http.ResponseWriter) {
+	fmt.Fprintf(writer, "{'Content-Type': 'image/x-icon'}")
 }
 
 func loadPage(title string, body string) *Page {
