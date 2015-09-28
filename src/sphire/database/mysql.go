@@ -13,6 +13,7 @@ type ConnectionDetails struct {
 	Database string
 }
 
-func (connection_details *ConnectionDetails)connect() {
-	
+func (connection_details *ConnectionDetails) connect() {
+
 }
+
