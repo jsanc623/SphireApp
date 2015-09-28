@@ -2,10 +2,12 @@ package log
 
 import (
 	"os"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 )
 
 var lpx = log.New()
+var environ string
 
 func Init(formatter string, environment string, log_file string) bool {
 	switch formatter {
@@ -31,6 +33,7 @@ func Init(formatter string, environment string, log_file string) bool {
 	case "PRD":
 		lpx.Level = log.WarnLevel
 	}
+	environ = environment
 
 	return true
 }
@@ -38,6 +41,10 @@ func Init(formatter string, environment string, log_file string) bool {
 // Log logs a message to the defined logger
 // var fields map[string]interface{} = make(map[string]interface{})
 func Log(fields map[string]interface{}, message string, level string) bool {
+	if environ == "DEV" {
+		fmt.Println(level, fields, message)
+	}
+
 	switch level {
 	case "debug":
 		lpx.WithFields(fields).Debug(message)

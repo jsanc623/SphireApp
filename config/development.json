@@ -1,11 +1,19 @@
 {
+    "environment": "DEV",
     "application": {
         "log": {
-            "error": "/var/log/sphire/error.log",
-            "access": "/var/log/sphire/access.log"
+            "file": "/var/log/sphire/sphire.log",
+            "type": "json"
         },
         "http": {
             "listen": "0.0.0.0:7227"
+        },
+        "mysql": {
+            "host": "",
+            "port": "",
+            "database": "",
+            "username": "",
+            "password": ""
         }
     }
 }
