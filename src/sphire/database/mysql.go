@@ -13,7 +13,9 @@ type ConnectionDetails struct {
 	Database string
 }
 
-func (connection_details *ConnectionDetails) connect() {
-
+func (conds *ConnectionDetails) connect() {
+	var dsn string = conds.Username + ":" + conds.Password + "@tcp(" + conds.Host +
+			":" + conds.Port + ")/" + conds.Database
+	db, err := sql.Open("mysql", dsn)
 }
 
